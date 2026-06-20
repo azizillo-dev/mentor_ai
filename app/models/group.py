@@ -64,6 +64,12 @@ class Group(BaseModel):
         cascade="all, delete-orphan",
         lazy="select",
     )
+    members: Mapped[List["GroupMember"]] = relationship(  # type: ignore[name-defined]
+        "GroupMember",
+        back_populates="group",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
 
     def __repr__(self) -> str:
         return f"<Group(id={self.id}, name={self.name!r}, teacher_id={self.teacher_id})>"

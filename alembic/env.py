@@ -23,6 +23,7 @@ from app.core.config import settings
 from app.db.base import Base
 from app.models import user as _user_models  # noqa: F401 - triggers model registration
 from app.models import group as _group_models  # noqa: F401
+from app.models import group_member as _group_member_models  # noqa: F401
 from app.models import homework as _homework_models  # noqa: F401
 from app.models import submission as _submission_models  # noqa: F401
 from app.models import ai_result as _ai_result_models  # noqa: F401

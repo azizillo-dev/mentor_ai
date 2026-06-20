@@ -75,6 +75,12 @@ class User(BaseModel):
         cascade="all, delete-orphan",
         lazy="select",
     )
+    memberships: Mapped[List["GroupMember"]] = relationship(  # type: ignore[name-defined]
+        "GroupMember",
+        back_populates="student",
+        cascade="all, delete-orphan",
+        lazy="select",
+    )
 
     # ─── Properties ───────────────────────────────────────────────────────────
     @property

@@ -9,12 +9,29 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.group import Group
+from app.models.group_member import GroupMember
 from app.models.homework import Homework
 from app.models.submission import Submission
 from app.models.user import User, UserRole
 
 
 class PermissionService:
+    @staticmethod
+    async def check_student_is_group_member(db: AsyncSession, student_id: int, group_id: UUID) -> None:
+        """
+        Tekshiradi: Student haqiqatan ushbu guruhga a'zomi?
+        """
+        stmt = select(GroupMember).where(
+            GroupMember.group_id == group_id,
+            GroupMember.student_id == student_id,
+            GroupMember.is_active == True
+        )
+        result = await db.execute(stmt)
+        if not result.scalars().first():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Siz ushbu guruh a'zosi emassiz. Vazifaga javob yuborish taqiqlanadi."
+            )
     @staticmethod
     async def check_teacher_owns_submission(db: AsyncSession, teacher_id: int, submission_id: UUID) -> None:
         """

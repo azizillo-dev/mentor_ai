@@ -52,10 +52,9 @@ class SubmissionService:
         # 1. Homework mavjudligini tekshirish
         homework = await self._get_homework(homework_id)
 
-        # TODO: Kelajakda Group Membership tizimi orqali 
-        # student ushbu guruh a'zosi ekanligi va homework aynan unga 
-        # tegishli ekanligini tekshiradigan qism shu yerda yozilishi kerak.
-        # Masalan: self._check_student_membership(homework.group_id, current_user.id)
+        # Student guruh a'zosi ekanligini tekshirish
+        from app.services.permission_service import PermissionService
+        await PermissionService.check_student_is_group_member(self.db, current_user.id, homework.group_id)
 
         # 2. Student allaqachon bu homeworkka javob yuborganligini tekshirish
         stmt_check = select(Submission).where(
